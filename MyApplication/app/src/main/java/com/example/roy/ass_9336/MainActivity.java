@@ -238,7 +238,12 @@ public class MainActivity extends Activity implements SensorEventListener {
                 Toast.makeText(getApplicationContext(),"time saved",Toast.LENGTH_SHORT).show();
 
                 if(buttonswitch.getText().toString().equals("GPS")){
-                    gpsreader = new GPSReader(getApplicationContext());
+                    if(buttonrate.getText().toString().toLowerCase().contains("lo")) {
+                        gpsreader = new GPSReader(getApplicationContext(), 6000);
+                    }
+                    else{
+                        gpsreader = new GPSReader(getApplicationContext(), 1000);
+                    }
                 }
                 else if(buttonswitch.getText().toString().equals("Acce")){
                     //http://www.cnblogs.com/taoweiji/p/3620329.html
@@ -269,6 +274,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                 }
                 else
                     System.out.println("lock not held");
+                gpsreader.stopUsingGPS();
                 mSensorManager.unregisterListener(MainActivity.this);
                 //startActivity(new Intent(sensorStop));
                 sendBroadcast(new Intent(sensorStop));
@@ -286,7 +292,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                 editor.commit();
                 buttongo.setText("Go");
                 text1.setText("Drain " + (startLevel - currentLevel) * 100 + "% in " +
-                        timeGap + " mins using " + sensorUsed + " with " + rateUsed + " speed"+currentLevel+" - "+startLevel);
+                        timeGap + " mins using " + sensorUsed + " with " + rateUsed + " speed "+currentLevel+" - "+startLevel);
             }
         }
     };
@@ -538,7 +544,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                         mSensorManager.registerListener(PersistService.this, accelerate, SensorManager.SENSOR_DELAY_FASTEST);
                         return;
                     }
-                    else if(buttonrate.getText().toString().contains("lo"))          //Sampling rate 200ms /100ms
+                    else if(buttonrate.getText().toString().contains("lo"))     //Sampling rate 200ms /100ms
                         mSensorManager.registerListener(PersistService.this, accelerate, SensorManager.SENSOR_DELAY_NORMAL);
                     else if(buttonrate.getText().toString().contains("edi"))    //Sampling rate 60ms  /40ms
                         mSensorManager.registerListener(PersistService.this, accelerate, SensorManager.SENSOR_DELAY_UI);

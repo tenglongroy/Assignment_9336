@@ -44,12 +44,19 @@ public class GPSReader extends Service implements LocationListener{
     // The minimum time between updates in milliseconds
     //private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
     private static final long MIN_TIME_BW_UPDATES = 1000 * 6 * 1;   //6 seconds
+    long minInterval;
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
     public GPSReader(Context context) {
         this.mContext = context;
+        this.minInterval = MIN_TIME_BW_UPDATES;
+        getLocation();
+    }
+    public GPSReader(Context context, long interval) {
+        this.mContext = context;
+        this.minInterval = interval;
         getLocation();
     }
 
@@ -66,12 +73,13 @@ public class GPSReader extends Service implements LocationListener{
             if (!isGPSEnabled && !isNetworkEnabled) {
                 // no network provider is enabled
             } else {
+                System.out.println(minInterval);
                 this.canGetLocation = true;
                 // if GPS Enabled get lat/long using GPS Services
                 if (isGPSEnabled) {
                     locationManager.requestLocationUpdates(
                             LocationManager.GPS_PROVIDER,
-                            MIN_TIME_BW_UPDATES,
+                            minInterval,
                             MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                     System.out.println("GPS Enabled");
                     if (locationManager != null) {
@@ -91,7 +99,7 @@ public class GPSReader extends Service implements LocationListener{
                     if (location == null) {
                         locationManager.requestLocationUpdates(
                                 LocationManager.NETWORK_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
+                                minInterval,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                         System.out.println("Network");
                         if (locationManager != null) {
