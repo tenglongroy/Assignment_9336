@@ -1,0 +1,18 @@
+slow 		11% in 186.0	min
+		6%  in 91.3	min
+
+medium		6%  in 75.4	min
+		5%  in 66.2	min
+
+fast		10% in 146.0	min
+		3%  in 43.1	min
+
+GPS_slow	4%  in 36.7	min
+GPS_fast	18% in 143.3	min
+
+flashlight	7%  in 39.1	min
+
+music		6%  in 47.7	min
+
+video		5%  in 16.6	min
+		4%  in 15.4	min
